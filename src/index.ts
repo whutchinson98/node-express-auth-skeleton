@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 import express = require('express');
 import cors = require('cors');
@@ -15,13 +15,13 @@ const HOST = process.env.HOST || '0.0.0.0';
 // APP
 const app = express();
 app.use(cors());
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
 
 // ROUTES
 app.get('/', (req: express.Request, res: express.Response) => {
-    res.send('Well done!');
-})
+  res.send('Well done!');
+});
 
 
 app.listen(PORT, () => {
