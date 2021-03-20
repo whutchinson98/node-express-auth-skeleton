@@ -8,6 +8,8 @@ const login = async (req: Request, res: Response) => {
   // Generate and return the tokens
   const tokens = generateAuthJWT(id);
 
+  res.cookie('auth', tokens.refreshToken);
+
   return res.status(200).json({refreshToken: tokens.refreshToken});
 };
 
