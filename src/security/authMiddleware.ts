@@ -4,7 +4,8 @@ dotenv.config();
 import {UserAuthRequest} from '../definitions/userAuthRequest';
 import {Response} from '../definitions/response';
 
-const auth = async (req: UserAuthRequest, res: Response, next) => {
+
+exports.auth = async (req: UserAuthRequest, res: Response, next) => {
   const authHeader = req.headers['authorization'];
 
   const token = req.body.token ||
@@ -38,5 +39,3 @@ const auth = async (req: UserAuthRequest, res: Response, next) => {
         next();
       });
 };
-
-module.exports.auth = auth;

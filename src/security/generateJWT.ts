@@ -1,9 +1,13 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
-import {JwtManager} from '../definitions/jwtManager';
+const jwtManager = require('./jwtManager');
 
-const generateAuthJWT = (id: string) => {
+/*
+ Creates the accessToken and refreshToken
+*/
+
+const signTokens = (id:string) => {
   const token = jwt.sign({id: id},
       process.env.ACCESS_TOKEN_SECRET!,
       {expiresIn: process.env.ACCESS_TOKEN_TIME || '1800s'});
@@ -19,24 +23,29 @@ const generateAuthJWT = (id: string) => {
 };
 
 /*
+ Creates then places the accessToken and refreshToken for a given userId
+*/
+const generateAuthJWT = (id: string) => {
+  const tokens = signTokens(id);
+
+  jwtManager.addRefreshToken(tokens.refreshToken, tokens.token, id);
+
+  return tokens;
+};
+
+/*
   Refreshes the token
 */
-const refreshToken = (jwtManager: JwtManager,
-    refreshToken: string,
-    id: string) => {
-  // refresh the token
-  // if refresh token exists
-  if ((refreshToken) && (refreshToken in jwtManager.getTokenList())) {
-    const token = jwt.sign({id: id},
-                           process.env.ACCESS_TOKEN_SECRET!,
-                           {expiresIn: process.env.ACCESS_TOKEN_TIME});
+const refreshToken = (refreshToken: string, id: string) => {
+  if (jwtManager.checkForRefreshToken(id, refreshToken)) {
+    const tokens = signTokens(id);
 
-    jwtManager.updateTokenList(token, refreshToken);
+    const success = jwtManager.updateRefreshToken(id,
+        tokens.refreshToken,
+        tokens.token);
 
-    return {
-      error: false,
-      token: token,
-    };
+    return success ? {error: false, message: 'Token refreshed'}:
+    {error: true, message: 'Issue updating tokens'};
   } else {
     return {
       error: true,

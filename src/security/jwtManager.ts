@@ -1,33 +1,70 @@
-import {TokenListEntry} from '../definitions/tokenListEntry';
+const RefreshToken = require('../models/refreshToken.model');
 
-/**
-* Manages the token list for refresh tokens
+/*
+  Checks if a given refresh token for a user exists and is valid
 */
-export default class JwtManager {
-  private tokenList: Map<String, TokenListEntry>;
+const checkForRefreshToken = async (userId: String, refreshToken: String) => {
+  const userToken = await RefreshToken.findOne({userId: userId});
 
-  /**
-  * Initializes the tokenList
-  */
-  constructor() {
-    console.log('JWT Manager Intialized');
-    this.tokenList = new Map<String, TokenListEntry>();
+  if (!userToken) {
+    console.log(`No token for ${userId} found`);
+    return false;
   }
 
-  /*
-    Gets the token list
-  */
-  getTokenList = () => {
-    return this.tokenList;
+  if (refreshToken.toString() !== userToken.refreshToken.toString()) {
+    console.log('Refresh tokens does not match what is in the database');
+    return false;
   }
 
-  /*
-    Updates a given refresh token in the token list with the new token
-  */
-  updateTokenList = (token: String, refreshToken: String) => {
-    this.tokenList.set(refreshToken, {
-      token,
-      refreshToken,
-    });
-  };
+  return true;
+};
+
+/*
+ Updates the users refresh token and token
+*/
+const updateRefreshToken = async (userId: String,
+    refreshToken: String,
+    token: String) => {
+  try {
+    await RefreshToken.findOneAndUpdate({userId: userId,
+      refreshToken: refreshToken,
+      accessToken: token},
+    {$set: {
+      refreshToken: refreshToken,
+      accessToken: token,
+    }});
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+  return true;
+};
+
+
+/*
+ Adds a new refresh token object to the database for the user
+*/
+const addRefreshToken = async (refreshToken: String,
+    token: String,
+    userId: String) => {
+  const userToken = new RefreshToken({
+    userId: userId,
+    accessToken: token,
+    refreshToken: refreshToken,
+  });
+
+  try {
+    await userToken.save();
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+
+  return true;
+};
+
+exports = {
+  checkForRefreshToken,
+  updateRefreshToken,
+  addRefreshToken,
 };

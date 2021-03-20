@@ -1,21 +1,26 @@
 'use strict';
 
-import express = require('express');
-import cors = require('cors');
-import bodyParser = require('body-parser');
-import JwtManager from './security/jwtManager';
-import {refreshToken} from './security/generateJWT';
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
 require('dotenv').config();
-
-// CONSTANTS
-const PORT = process.env.PORT || 8080;
-const HOST = process.env.HOST || '0.0.0.0';
-
-// JWT Manager
-const tokenManager = new JwtManager();
+const globalAny:any = global;
 
 // DATABASE CONNECTION
 
+const mongoURL = process.env.NODE_ENV === 'test' ?
+  globalAny.__MONGO_URI__ : process.env.DB_URL;
+
+mongoose.connect(mongoURL,
+    {useNewUrlParser: true, useUnifiedTopology: false})
+    .catch((err) => {
+      console.log(err);
+    });
+
+const db = mongoose.connection;
+db.once('open', () => console.log('Connected to mongo database'));
+db.on('error', console.error.bind(console, 'MongoDB connection error: '));
 
 // APP
 const app = express();
@@ -24,17 +29,11 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
 
 // ROUTES
-app.get('/', (req: express.Request, res: express.Response) => {
+
+app.use('/', require('./routes/authorizationRouter'));
+
+app.get('/health', (req: express.Request, res: express.Response) => {
   res.send('Well done!');
 });
 
-app.post('/token', (req: express.Request, res: express.Response) => {
-  const oldToken = req.body.refreshToken;
-  const id = req.body.id;
-
-  refreshToken(tokenManager, oldToken, id);
-});
-
-app.listen(PORT, () => {
-  console.log(`Running on http://${HOST}:${PORT}`);
-});
+module.exports = app;
