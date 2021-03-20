@@ -9,13 +9,21 @@ WORKDIR /app
 # copy configs to /app folder
 COPY package*.json ./
 COPY tsconfig.json ./
-# copy source code to /app/src folder
+COPY .eslintrc.json ./
+COPY .prettierrc.json ./
+
+# copy files
 COPY src /app/src
 
-# check files list
-RUN ls -a
-
+# Install Dependencies
 RUN npm install
+
+# Lint
+RUN npm run lint
+
+# Test
+
+# Build
 RUN npm run build
 
 EXPOSE 8080
