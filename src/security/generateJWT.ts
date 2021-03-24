@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
-const jwtManager = require('./jwtManager');
+const {addRefreshToken,
+  checkForRefreshToken,
+  updateRefreshToken} = require('./jwtManager');
 
 /*
  Creates the accessToken and refreshToken
@@ -28,7 +30,7 @@ const signTokens = (id:string) => {
 const generateAuthJWT = (id: string) => {
   const tokens = signTokens(id);
 
-  jwtManager.addRefreshToken(tokens.refreshToken, tokens.token, id);
+  addRefreshToken(tokens.refreshToken, tokens.token, id);
 
   return tokens;
 };
@@ -37,10 +39,10 @@ const generateAuthJWT = (id: string) => {
   Refreshes the token
 */
 const refreshToken = (refreshToken: string, id: string) => {
-  if (jwtManager.checkForRefreshToken(id, refreshToken)) {
+  if (checkForRefreshToken(id, refreshToken)) {
     const tokens = signTokens(id);
 
-    const success = jwtManager.updateRefreshToken(id,
+    const success = updateRefreshToken(id,
         tokens.refreshToken,
         tokens.token);
 
