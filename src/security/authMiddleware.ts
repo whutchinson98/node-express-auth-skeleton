@@ -2,15 +2,14 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 import {UserAuthRequest} from '../definitions/userAuthRequest';
-import {Response} from '../definitions/response';
-
+import {Response} from 'express';
 
 exports.auth = async (req: UserAuthRequest, res: Response, next) => {
-  const authHeader = req.headers['authorization'];
+  const authHeader = req.cookies.auth.refreshToken;
 
   const token = req.body.token ||
                 req.query.token ||
-                authHeader!.split(' ')[1];
+                authHeader;
 
   if (req.body.privateKey &&
       process.env.ADMIN_PRIVATE_KEY === req.body.privateKey) {

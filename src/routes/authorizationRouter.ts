@@ -4,9 +4,10 @@ import express from 'express';
 /* eslint-disable-next-line new-cap*/
 const router = express.Router();
 
-import {login} from '../controllers/authorizationController';
+const {login, logout} = require('../controllers/authorizationController');
 
 // ROUTES
 router.put('/login', login);
+router.get('/logout', logout);
 
 module.exports = router;

@@ -7,3 +7,7 @@ Basic Node Express Skeleton with JWT
 `docker build -t node-express-auth-skeleton .`
 
 `docker run -p 8080:8080 node-express-auth-skeleton`
+
+### Calls
+
+PUT `/login` - Given valid user and password combo it returns the authorization token as well as an 'auth' cookie
