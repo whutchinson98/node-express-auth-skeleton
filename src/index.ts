@@ -30,10 +30,19 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
 
 // ROUTES
 
-app.use('/', require('./routes/authorizationRouter'));
-
+/* Health Check */
 app.get('/health', (req: express.Request, res: express.Response) => {
   res.send('Well done!');
 });
+
+/* Login, Logout */
+app.use('/', require('./routes/authorizationRouter'));
+
+// AUTHENTICATED ROUTES
+app.use(require('./security/authMiddleware'));
+
+/* RefreshToken */
+app.use('/', require('./routes/refreshRouter'));
+
 
 module.exports = app;

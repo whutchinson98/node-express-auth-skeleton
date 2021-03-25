@@ -38,7 +38,7 @@ const generateAuthJWT = (id: string) => {
 /*
   Refreshes the token
 */
-const refreshToken = (refreshToken: string, id: string) => {
+const refreshTokens = (refreshToken: string, id: string) => {
   if (checkForRefreshToken(id, refreshToken)) {
     const tokens = signTokens(id);
 
@@ -46,7 +46,7 @@ const refreshToken = (refreshToken: string, id: string) => {
         tokens.refreshToken,
         tokens.token);
 
-    return success ? {error: false, message: 'Token refreshed'}:
+    return success ? {error: false, token: tokens.refreshToken}:
     {error: true, message: 'Issue updating tokens'};
   } else {
     return {
@@ -56,4 +56,4 @@ const refreshToken = (refreshToken: string, id: string) => {
   }
 };
 
-export {generateAuthJWT, refreshToken};
+export {generateAuthJWT, refreshTokens};

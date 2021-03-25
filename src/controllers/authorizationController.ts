@@ -1,6 +1,6 @@
 import {Response} from 'express';
 import {Request} from '../definitions/request';
-import {generateAuthJWT} from '../security/generateJWT';
+import {generateAuthJWT, refreshTokens} from '../security/generateJWT';
 import {LoginRequest} from '../definitions/loginRequest';
 const {removeUsersTokens} = require('../security/jwtManager');
 
@@ -48,7 +48,32 @@ const logout = async (req: Request, res: Response) => {
 
   return res.status(200).json({message: 'Logout Successful', error: false});
 };
+
+const refreshToken = async (req: Request, res: Response) => {
+  const {id} = req.user;
+  const {refreshToken} = req.body;
+
+  if (!id || !refreshToken) {
+    return res.status(401).json({
+      message: 'Need user id and refresh token',
+      error: true,
+    });
+  }
+
+  const result = refreshTokens(refreshToken, id);
+
+  if (result.error) {
+    return res.status(400).json({
+      message: result.message,
+      error: true,
+    });
+  }
+
+  return res.status(200).json({error: false, token: result.token});
+};
+
 module.exports = {
   login,
   logout,
+  refreshToken,
 };
