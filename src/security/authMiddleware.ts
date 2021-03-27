@@ -8,14 +8,14 @@ const auth = async (req: UserAuthRequest, res: Response, next) => {
   const authCookie = req.headers['cookie'];
 
   let authHeader = '';
-  if(authCookie) {
+  if (authCookie) {
     authHeader = authCookie.split('=')[1];
   }
 
   const token = req.body.token ||
                 req.query.token ||
                 authHeader;
-                
+
   if (req.body.privateKey &&
       process.env.ADMIN_PRIVATE_KEY === req.body.privateKey) {
     return next();

@@ -28,8 +28,8 @@ const updateRefreshToken = async (userId: string,
   try {
     const userTokens = await RefreshToken.findOne({userId: userId});
 
-    if(!userTokens){
-      console.log("No match found");
+    if (!userTokens) {
+      console.log('No match found');
       return false;
     }
 
