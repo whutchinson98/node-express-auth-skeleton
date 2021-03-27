@@ -38,11 +38,11 @@ const generateAuthJWT = (id: string) => {
 /*
   Refreshes the token
 */
-const refreshTokens = (refreshToken: string, id: string) => {
+const refreshTokens = async (refreshToken: string, id: string) => {
   if (checkForRefreshToken(id, refreshToken)) {
     const tokens = signTokens(id);
 
-    const success = updateRefreshToken(id,
+    const success = await updateRefreshToken(id,
         tokens.refreshToken,
         tokens.token);
 

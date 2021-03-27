@@ -60,7 +60,7 @@ const refreshToken = async (req: Request, res: Response) => {
     });
   }
 
-  const result = refreshTokens(refreshToken, id);
+  const result = await refreshTokens(refreshToken, id);
 
   if (result.error) {
     return res.status(400).json({
@@ -68,6 +68,8 @@ const refreshToken = async (req: Request, res: Response) => {
       error: true,
     });
   }
+
+  res.cookie('auth', result.token);
 
   return res.status(200).json({error: false, token: result.token});
 };
