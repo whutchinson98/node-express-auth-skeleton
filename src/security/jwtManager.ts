@@ -26,13 +26,17 @@ const updateRefreshToken = async (userId: string,
     refreshToken: string,
     token: string) => {
   try {
-    await RefreshToken.findOneAndUpdate({userId: userId,
-      refreshToken: refreshToken,
-      accessToken: token},
-    {$set: {
-      refreshToken: refreshToken,
-      accessToken: token,
-    }});
+    const userTokens = await RefreshToken.findOne({userId: userId});
+
+    if(!userTokens){
+      console.log("No match found");
+      return false;
+    }
+
+    userTokens.accessToken = token;
+    userTokens.refreshToken = refreshToken;
+
+    await userTokens.save();
   } catch (err) {
     console.log(err);
     return false;

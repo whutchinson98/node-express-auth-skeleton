@@ -6,7 +6,7 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --silent --testTimeout=5000 --runInBand --detectOpenHandles --forceExit",
     "build": "tsc --project ./",
-    "build:dev": "tsc --project ./ && node ./src/start.js",
+    "build:dev": "tsc --project ./ && node ./build/src/start.js",
     "start": "node ./build/start.js",
     "lint": "node ./node_modules/eslint/bin/eslint.js --ext .ts ./src/",
     "lint:fix": "npm run lint -- --fix",

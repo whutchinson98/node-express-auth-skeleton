@@ -39,6 +39,7 @@ app.get('/health', (req: express.Request, res: express.Response) => {
 app.use('/', require('./routes/authorizationRouter'));
 
 // AUTHENTICATED ROUTES
+
 app.use(require('./security/authMiddleware'));
 
 /* RefreshToken */

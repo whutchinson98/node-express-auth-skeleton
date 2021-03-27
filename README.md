@@ -6,7 +6,7 @@ Basic Node Express Skeleton with JWT
 
 `docker build -t node-express-auth-skeleton .`
 
-`docker run -p 8080:8080 node-express-auth-skeleton`
+`docker run -p 8080:8080 --env.file ./env.list node-express-auth-skeleton:latest`
 
 ### Calls
 
