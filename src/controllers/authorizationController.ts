@@ -23,7 +23,7 @@ const login = async (req: LoginRequest, res: Response) => {
 
   res.cookie('auth', tokens.refreshToken);
 
-  return res.status(200).json({refreshToken: tokens.refreshToken});
+  return res.status(200).json({token: tokens.refreshToken});
 };
 
 const logout = async (req: Request, res: Response) => {
