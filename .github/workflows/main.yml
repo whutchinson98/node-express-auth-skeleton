@@ -1,10 +1,6 @@
-name: BUILD CI
+name: Node.js CI
 
-on:
-  push:
-    branches: [ $default-branch ]
-  pull_request:
-    branches: [ $default-branch ]
+on: [push]
 
 jobs:
   build:
@@ -13,10 +9,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Installation
+    - name: Use Node.js
       uses: actions/setup-node@v1
       with:
         node-version: '14.x'
     - run: npm ci
     - run: npm run lint
-    - run: npm run test
