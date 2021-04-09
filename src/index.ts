@@ -5,12 +5,10 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 require('dotenv').config();
-const globalAny:any = global;
 
 // DATABASE CONNECTION
-
 const mongoURL = process.env.NODE_ENV === 'test' ?
-  globalAny.__MONGO_URI__ : process.env.DB_URL;
+  (global as any).__MONGO_URI__ : process.env.DB_URL;
 
 mongoose.connect(mongoURL,
     {useNewUrlParser: true, useUnifiedTopology: false})
