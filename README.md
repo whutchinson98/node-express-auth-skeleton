@@ -1,6 +1,6 @@
 # node-express-auth-skeleton
 
-Basic Node Express Skeleton with JWT
+Basic Node Express Skeleton with JWT.
 
 ### To Run
 
