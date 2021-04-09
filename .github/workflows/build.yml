@@ -18,7 +18,5 @@ jobs:
       with:
         node-version: '14.x'
     - run: npm ci
-    - name: Lint
     - run: npm run lint
-    - name: Test
     - run: npm run test
