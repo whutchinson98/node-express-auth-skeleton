@@ -4,13 +4,13 @@
   "description": "Basic Node Express Skeleton with JWT",
   "main": "start.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --silent --testTimeout=5000 --runInBand --detectOpenHandles --forceExit",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=5000 --runInBand --detectOpenHandles --forceExit",
     "build": "tsc --project ./",
     "build:dev": "tsc --project ./ && node ./build/src/start.js",
     "start": "node ./build/start.js",
     "lint": "node ./node_modules/eslint/bin/eslint.js --ext .ts ./src/",
     "lint:fix": "npm run lint -- --fix",
-    "coverage": "cross-env NODE_ENV=test jest --testTimeout=5000 --runInBand --detectOpenHandles --forceExit --collectCoverageFrom=src/**.ts --coverage"
+    "coverage": "cross-env NODE_ENV=test jest --silent --testTimeout=5000 --runInBand --detectOpenHandles --forceExit --collectCoverageFrom=src/**.ts --coverage"
   },
   "repository": {
     "type": "git",
