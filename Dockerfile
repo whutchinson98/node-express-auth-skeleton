@@ -22,7 +22,7 @@ RUN npm install
 RUN npm run lint
 
 # Test
-
+RUN npm run test
 
 # Environment Variables
 ENV ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}

@@ -2,7 +2,7 @@
 
 This repo is meant to a starter template for an authentication system.
 It provides you with 3 calls that can be expanded on to incorporate other databases and steps in
-authentication process. Currently the login does not verify the user is valid and creates an 'id' 
+authentication process. Currently the login does not verify the user is valid and creates an 'id'
 from the combination of the username and password that is send into the login request.
 
 ### POST: `/login`
@@ -18,10 +18,11 @@ Request Body:
 
 Returns:
     {
+        "error": boolean,
         "token": string
     }
 
-    cookie[auth] - contains the refresh token for authenticated requests 
+    cookie[auth] - contains the refresh token for authenticated requests
 
 ### PUT: `/refreshtoken`
 Usage:
@@ -45,6 +46,15 @@ Usage:
 - Deletes the user's RefreshToken object from the database
 
 Returns:
+    {
+        error: boolean,
+        message: string
+    }
+
+
+### Error Formatting:
+Responses all contain an error boolean and if there is an error there will be a message in the response body
+
     {
         error: boolean,
         message: string
