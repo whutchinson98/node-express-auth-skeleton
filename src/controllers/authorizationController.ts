@@ -27,14 +27,14 @@ const login = async (req: LoginRequest, res: Response) => {
 };
 
 const logout = async (req: Request, res: Response) => {
-  const {id} = req.user;
-
-  if (!id) {
+  if (!req.user || !req.user.id) {
     return res.status(400).json({
-      message: 'No valid Id to logout with.',
+      message: 'No valid User or Id to logout with.',
       error: true,
     });
   }
+
+  const {id} = req.user;
 
   const result = await removeUsersTokens(id);
 

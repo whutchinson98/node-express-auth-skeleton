@@ -42,6 +42,6 @@ app.use(require('./security/authMiddleware'));
 
 /* RefreshToken */
 app.use('/', require('./routes/refreshRouter'));
-
+app.use('/', require('./routes/logoutRouter'));
 
 module.exports = app;
