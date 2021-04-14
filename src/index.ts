@@ -44,4 +44,4 @@ app.use(require('./security/authMiddleware'));
 app.use('/', require('./routes/refreshRouter'));
 app.use('/', require('./routes/logoutRouter'));
 
-module.exports = app;
+export = app;

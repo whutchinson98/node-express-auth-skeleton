@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const {generateAuthJWT} = require('../src/security/generateJWT');
 
-const initializeDatabase = async () => {
+const initializeDatabase = () => {
     process.env = {
         ACCESS_TOKEN_SECRET: 'ABC',
         ACCESS_TOKEN_TIME: '1800s',
@@ -16,9 +16,7 @@ const initializeDatabase = async () => {
 };
 
 
-global.beforeAll(async (done) => {
-
-
+global.beforeEach(async (done) => {
     //setup stuff here
     await mongoose.connect(global.__MONGO_URI__,
         {
@@ -27,13 +25,16 @@ global.beforeAll(async (done) => {
             useUnifiedTopology: true
         },
         async (err) => {
-            await initializeDatabase();
+            initializeDatabase();
             if (err) {
                 console.error(err);
                 process.exit(1);
             }
-
-        done();
+          done();
     });
 });
+
+global.afterEach(async () => {
+  await mongoose.disconnect();
+})
 

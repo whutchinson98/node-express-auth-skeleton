@@ -1,4 +1,4 @@
-const app = require('./index');
+import app from './index';
 const appAny:any = app;
 
 // CONSTANTS
