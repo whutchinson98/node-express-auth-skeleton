@@ -29,9 +29,7 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
 // ROUTES
 
 /* Health Check */
-app.get('/health', (req: express.Request, res: express.Response) => {
-  res.send('Well done!');
-});
+app.use('/health', require('./routes/healthRouter'));
 
 /* Login, Logout */
 app.use('/', require('./routes/authorizationRouter'));

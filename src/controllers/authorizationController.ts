@@ -23,7 +23,7 @@ const login = async (req: LoginRequest, res: Response) => {
 
   res.cookie('auth', tokens.refreshToken);
 
-  return res.status(200).json({token: tokens.refreshToken});
+  return res.status(200).json({error: false, token: tokens.refreshToken});
 };
 
 const logout = async (req: Request, res: Response) => {
@@ -45,6 +45,8 @@ const logout = async (req: Request, res: Response) => {
           error: true,
         });
   }
+
+  res.clearCookie('auth');
 
   return res.status(200).json({message: 'Logout Successful', error: false});
 };

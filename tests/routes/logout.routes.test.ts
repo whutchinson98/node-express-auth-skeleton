@@ -15,6 +15,7 @@ describe('Logout Route', () => {
         .set('cookie', `auth=${(global as any).authCookie}`);
 
     expect(response.status).toBe(200);
+    expect(response.headers['auth']).toBeFalsy();
     expect(response.body.message).toBeTruthy();
     expect(response.body.error).toBeFalsy();
   });
