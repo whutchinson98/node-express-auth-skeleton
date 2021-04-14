@@ -8,13 +8,12 @@ const {addRefreshToken,
 /*
  Creates the accessToken and refreshToken
 */
-
 const signTokens = (id:string) => {
   const token = jwt.sign({id: id},
       process.env.ACCESS_TOKEN_SECRET!,
       {expiresIn: process.env.ACCESS_TOKEN_TIME || '1800s'});
 
-  const refreshToken = jwt.sign({id: id},
+  const refreshToken = jwt.sign({id: token as string},
                        process.env.REFRESH_TOKEN_SECRET!,
                        {expiresIn: process.env.REFRESH_TOKEN_TIME || '240s'});
 

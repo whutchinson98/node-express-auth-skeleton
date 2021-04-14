@@ -5,9 +5,9 @@
   "main": "start.js",
   "scripts": {
     "build": "tsc --project ./",
-    "build:dev": "tsc --project ./ && node ./build/src/start.js",
+    "build:dev": "tsc --project ./ && node ./build/start.js",
     "start": "node ./build/start.js",
-    "lint": "node ./node_modules/eslint/bin/eslint.js --ext .ts ./src/",
+    "lint": "node ./node_modules/eslint/bin/eslint.js --ext .ts ./src/ ./tests/",
     "lint:fix": "npm run lint -- --fix",
     "test": "cross-env NODE_ENV=test jest --testTimeout=5000 --runInBand --detectOpenHandles --forceExit",
     "test:coverage": "cross-env NODE_ENV=test jest --silent --testTimeout=5000 --runInBand --detectOpenHandles --forceExit --collectCoverageFrom=src/**/**.ts --coverage"
