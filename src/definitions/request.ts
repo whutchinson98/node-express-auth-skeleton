@@ -2,5 +2,6 @@ import express from 'express';
 
 export interface Request extends express.Response {
   user: any,
-  body: any
+  body: any,
+  refreshToken: string,
 };

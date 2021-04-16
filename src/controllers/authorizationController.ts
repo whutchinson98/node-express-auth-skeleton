@@ -53,7 +53,7 @@ const logout = async (req: Request, res: Response) => {
 
 const refreshToken = async (req: Request, res: Response) => {
   const {id} = req.user;
-  const {refreshToken} = req.body;
+  const {refreshToken} = req.refreshToken ? req : req.body;
 
   if (!id || !refreshToken) {
     return res.status(401).json({

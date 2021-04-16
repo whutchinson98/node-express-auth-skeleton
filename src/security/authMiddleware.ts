@@ -64,7 +64,7 @@ const auth = async (req: UserAuthRequest,
                      }
 
                      req.user = id;
-
+                     req.refreshToken = refreshToken;
                      next();
                    });
       });
