@@ -2,7 +2,8 @@ import {Response} from 'express';
 import {Request} from '../definitions/request';
 import {generateAuthJWT, refreshTokens} from '../security/generateJWT';
 import {LoginRequest} from '../definitions/loginRequest';
-const {removeUsersTokens} = require('../security/jwtManager');
+import {authenticate} from '../security/authenticationManager';
+import {removeUsersTokens} from '../security/jwtManager';
 
 const login = async (req: LoginRequest, res: Response) => {
   const {user, password} = req.body;
@@ -15,11 +16,17 @@ const login = async (req: LoginRequest, res: Response) => {
         });
   }
 
-  // Authenticate that user credentials are valid
-  const id = user + password;
+  const isAuth = await authenticate(user, password);
+
+  if (isAuth === '') {
+    return res.status(401).json({
+      error: true,
+      message: 'Invalid user or password',
+    });
+  }
 
   // Generate and return the tokens
-  const tokens = generateAuthJWT(id);
+  const tokens = generateAuthJWT(isAuth);
 
   res.cookie('auth', tokens.refreshToken);
 

@@ -3,7 +3,8 @@ const RefreshToken = require('../models/refreshToken.model');
 /*
   Checks if a given refresh token for a user exists and is valid
 */
-const checkForRefreshToken = async (userId: string, refreshToken: string) => {
+export const checkForRefreshToken = async (userId: string,
+    refreshToken: string) => {
   const userToken = await RefreshToken.findOne({userId: userId});
 
   if (!userToken) {
@@ -22,7 +23,7 @@ const checkForRefreshToken = async (userId: string, refreshToken: string) => {
 /*
  Updates the users refresh token and token
 */
-const updateRefreshToken = async (userId: string,
+export const updateRefreshToken = async (userId: string,
     refreshToken: string,
     token: string) => {
   try {
@@ -48,7 +49,7 @@ const updateRefreshToken = async (userId: string,
 /*
  Adds a new refresh token object to the database for the user
 */
-const addRefreshToken = async (refreshToken: string,
+export const addRefreshToken = async (refreshToken: string,
     token: string,
     userId: string) => {
   const userToken = new RefreshToken({
@@ -70,7 +71,7 @@ const addRefreshToken = async (refreshToken: string,
 /*
   Removes the tokens for a given user to log them out
 */
-const removeUsersTokens = async (id: string) => {
+export const removeUsersTokens = async (id: string) => {
   try {
     const result = await RefreshToken.deleteMany({userId: id}).exec();
     return result.deletedCount > 0;
@@ -80,9 +81,3 @@ const removeUsersTokens = async (id: string) => {
   }
 };
 
-module.exports = {
-  checkForRefreshToken,
-  updateRefreshToken,
-  addRefreshToken,
-  removeUsersTokens,
-};

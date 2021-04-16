@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
-const {addRefreshToken,
+import {addRefreshToken,
   checkForRefreshToken,
-  updateRefreshToken} = require('./jwtManager');
+  updateRefreshToken} from './jwtManager';
 
 /*
  Creates the accessToken and refreshToken
