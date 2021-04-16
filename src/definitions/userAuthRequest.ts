@@ -1,5 +1,6 @@
 import {Request} from 'express';
 
 export interface UserAuthRequest extends Request {
-  user: string
+  user: string,
+  refreshToken: string,
 };

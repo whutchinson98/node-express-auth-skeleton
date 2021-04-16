@@ -72,12 +72,12 @@ const addRefreshToken = async (refreshToken: string,
 */
 const removeUsersTokens = async (id: string) => {
   try {
-    await RefreshToken.deleteMany({userId: id}).exec();
+    const result = await RefreshToken.deleteMany({userId: id}).exec();
+    return result.deletedCount > 0;
   } catch (err) {
     console.log(err);
     return false;
   }
-  return true;
 };
 
 module.exports = {
