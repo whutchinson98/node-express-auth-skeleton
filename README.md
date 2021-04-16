@@ -15,46 +15,46 @@ Create a .env file in the root directory with the following variables
 
 ### Commands
 
-### NPM
+#### NPM
 
-*Install Dependencies:*
+**Install Dependencies:**
 
 `npm install`
 
-*Lint:*
+**Lint:**
 
 `npm run lint`
 
-*Lint Fix:*
+**Lint Fix:**
 
 `npm run lint:fix`
 
-*Test:*
+**Test:**
 
 `npm run test`
 
-*Test with Coverage:*
+**Test with Coverage:**
 
 `npm run test:coverage`
 
-*Build:*
+**Build:**
 
 `npm run build`
 
-*Build & Deploy:*
+**Build & Deploy:**
 
 `npm run build:dev`
 
-*Deploy:*
+**Deploy:**
 `npm run start`
 
 
-### Docker
+#### Docker
 
-*Build Docker Image:*
+**Build Docker Image:**
 
 `docker build -t node-express-auth-skeleton .`
 
-*Deploy Docker Image:*
+**Deploy Docker Image:**
 
 `docker run -p 8080:8080 --env-file ./env.list node-express-auth-skeleton:latest`
