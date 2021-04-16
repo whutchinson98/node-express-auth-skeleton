@@ -5,6 +5,8 @@ It provides you with 3 calls that can be expanded on to incorporate other databa
 authentication process. Currently the login does not verify the user is valid and creates an 'id'
 from the combination of the username and password that is send into the login request.
 
+## Main Calls
+
 ### POST: `/login`
 Usage:
 - Logs in the user and provides them with an auth cookie containing the refresh token as well as the refresh token returned
@@ -12,14 +14,14 @@ in the body
 
 Request Body:
     {
-        "user": string,
-        "password": string
+      "user": string,
+      "password": string
     }
 
 Returns:
     {
-        "error": boolean,
-        "token": string
+      "error": boolean,
+      "token": string
     }
 
     cookie[auth] - contains the refresh token for authenticated requests
@@ -30,13 +32,13 @@ Usage:
 
 Request Body:
     {
-        "refreshToken": string
+      "refreshToken": string
     }
 
 Returns:
     {
-        "error": boolean,
-        "token": string
+      "error": boolean,
+      "token": string
     }
 
     cookie[auth] - contains the refresh token for authenticated requests
@@ -47,8 +49,8 @@ Usage:
 
 Returns:
     {
-        error: boolean,
-        message: string
+      "error": boolean,
+      "message": string
     }
 
 
@@ -56,6 +58,29 @@ Returns:
 Responses all contain an error boolean and if there is an error there will be a message in the response body
 
     {
-        error: boolean,
-        message: string
+        "error": boolean,
+        "message": string
+    }
+
+## Health Calls
+
+### GET `/misc`
+Usage:
+- Returns `Healthy` as a way to check if the service is still running
+
+Returns:
+    {
+      "error": boolean,
+      "message": string
+    }
+
+### GET `/health/connections`
+Usage:
+- Returns the Connection status of the mongoDB or any errors
+
+Returns:
+    {
+      "error": boolean,
+      "message": string,
+      "mongoose": string
     }
