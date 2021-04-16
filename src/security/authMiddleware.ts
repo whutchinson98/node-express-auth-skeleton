@@ -20,7 +20,7 @@ const auth = async (req: UserAuthRequest,
         authHeader;
 
   // If ADMIN_PRIVATE_KEY is used and matches secret allow call to go forward
-  if (req.body.privateKey &&
+  if (process.env.NODE_ENV !== 'PROD' && req.body.privateKey &&
         process.env.ADMIN_PRIVATE_KEY === req.body.privateKey) {
     return next();
   }
