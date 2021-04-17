@@ -20,3 +20,22 @@ export const authenticate = async (username: string, password: string)
 
   return user.id;
 };
+
+/**
+ * @param {string} username
+ * @return {boolean} whether the user exists or not
+*/
+export const checkUserExists = async (username: string)
+:Promise<string> => {
+  try {
+    const user = await User.findOne({username: username});
+
+    if (user) {
+      return 'User was found with that username';
+    }
+    return '';
+  } catch (err) {
+    console.log(err);
+    return 'Error occurred looking for user';
+  }
+};

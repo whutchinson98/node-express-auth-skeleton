@@ -1,6 +1,7 @@
 import {Response} from 'express';
 import {Request} from '../definitions/request';
 import bcrypt from 'bcrypt';
+import {checkUserExists} from '../security/authenticationManager';
 const User = require('../models/user.model');
 require('dotenv').config();
 
@@ -11,6 +12,15 @@ const createUser = async (req: Request, res: Response) => {
     return res.status(400).json({
       error: true,
       message: 'Username and Password are required',
+    });
+  }
+
+  const userCheck = await checkUserExists(username);
+
+  if (userCheck !== '') {
+    return res.status(400).json({
+      error: true,
+      message: userCheck,
     });
   }
 
