@@ -1,11 +1,13 @@
 import app from '../../src/index';
 import supertest from 'supertest';
 const request = supertest(app);
+import * as authenticationManager
+  from '../../src/security/authenticationManager';
 
 describe('Admin Route', () => {
   test('Create User 200 OK', async () => {
     const response = await request.post('/admin/create').send({
-      username: 'will2',
+      username: 'newUser',
       password: 'password',
     }).set({'privatekey': process.env.ADMIN_PRIVATE_KEY});
 
@@ -22,6 +24,8 @@ describe('Admin Route', () => {
     expect(response.body.error).toBeTruthy();
   });
   test('Create User 400 Error creating user', async () => {
+    jest.spyOn(authenticationManager, 'checkUserExists')
+        .mockImplementation(() => Promise.resolve(''));
     const response = await request.post('/admin/create').send({
       username: {badObject: []},
       password: 'bad',
