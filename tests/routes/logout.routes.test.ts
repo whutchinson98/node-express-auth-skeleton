@@ -6,7 +6,7 @@ const {signToken} = require('../helper.tests');
 
 describe('Logout Route', () => {
   test('200 OK', async () => {
-    const response = await request.get('/logout')
+    const response = await request.get('/auth/logout')
         .withCredentials()
         .set('cookie', `auth=${(global as any).authCookie}`);
 
@@ -17,7 +17,7 @@ describe('Logout Route', () => {
   });
 
   test('400 No User', async () => {
-    const response = await request.get('/logout')
+    const response = await request.get('/auth/logout')
         .withCredentials()
         .set('cookie', `auth=${jwt.sign({id: signToken({wrong: true})},
             process.env.REFRESH_TOKEN_SECRET as string,
@@ -30,7 +30,7 @@ describe('Logout Route', () => {
   });
 
   test('400 Invalid User', async () => {
-    const response = await request.get('/logout')
+    const response = await request.get('/auth/logout')
         .withCredentials()
         .set('cookie', `auth=${jwt.sign({id: signToken({id: 'badID'})},
         process.env.REFRESH_TOKEN_SECRET as string,
@@ -38,7 +38,7 @@ describe('Logout Route', () => {
 
     expect(response.status).toBe(400);
     expect(response.body.message)
-        .toEqual('Error occured removing users tokens. See Logs');
+        .toEqual('Error occurred removing users tokens. See Logs');
     expect(response.body.error).toBeTruthy();
   });
 });

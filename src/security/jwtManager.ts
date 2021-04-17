@@ -25,13 +25,13 @@ export const checkForRefreshToken = async (userId: string,
 */
 export const updateRefreshToken = async (userId: string,
     refreshToken: string,
-    token: string) => {
+    token: string):Promise<string> => {
   try {
     const userTokens = await RefreshToken.findOne({userId: userId});
 
     if (!userTokens) {
-      console.log('No match found');
-      return false;
+      console.log('No user found with token');
+      return 'No user found';
     }
 
     userTokens.accessToken = token;
@@ -40,9 +40,9 @@ export const updateRefreshToken = async (userId: string,
     await userTokens.save();
   } catch (err) {
     console.log(err);
-    return false;
+    return 'error occurred saving token';
   }
-  return true;
+  return 'success';
 };
 
 

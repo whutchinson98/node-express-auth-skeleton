@@ -14,7 +14,7 @@ export const authenticate = async (username: string, password: string)
     return '';
   }
 
-  if (!bcrypt.compare(password, user.password)) {
+  if (!bcrypt.compareSync(password, user.password)) {
     return '';
   }
 

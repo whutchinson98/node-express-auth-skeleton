@@ -6,7 +6,7 @@ const {signToken} = require('../helper.tests');
 
 describe('Refresh Route', () => {
   test('200 OK', async () => {
-    const response = await request.put('/refreshtoken')
+    const response = await request.put('/auth/refreshtoken')
         .withCredentials()
         .set('cookie', `auth=${(global as any).authCookie}`);
 
@@ -16,7 +16,7 @@ describe('Refresh Route', () => {
   });
 
   test('401 No User present', async () => {
-    const response = await request.put('/refreshtoken')
+    const response = await request.put('/auth/refreshtoken')
         .withCredentials()
         .set('cookie', `auth=${jwt.sign({id: signToken({wrong: true})},
         process.env.REFRESH_TOKEN_SECRET as string,
@@ -28,7 +28,7 @@ describe('Refresh Route', () => {
   });
 
   test('400 Error in Refreshing Token', async () => {
-    const response = await request.put('/refreshtoken')
+    const response = await request.put('/auth/refreshtoken')
         .withCredentials()
         .set('cookie', `auth=${jwt.sign({id: signToken({id: 'badID'})},
         process.env.REFRESH_TOKEN_SECRET as string,
@@ -36,6 +36,6 @@ describe('Refresh Route', () => {
 
     expect(response.status).toBe(400);
     expect(response.body.error).toBeTruthy();
-    expect(response.body.message).toEqual('Issue updating tokens');
+    expect(response.body.message).toEqual('Invalid refreshToken');
   });
 });

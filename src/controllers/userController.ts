@@ -15,11 +15,11 @@ const createUser = async (req: Request, res: Response) => {
   }
 
   const saltRounds = process.env.BCRYPT_SALT_ROUNDS ?
-    process.env.BCRYPT_SALT_ROUNDS : 10;
+    parseInt(process.env.BCRYPT_SALT_ROUNDS) : 10;
 
   const user = new User({
     username,
-    password: bcrypt.hash(password, bcrypt.genSaltSync(
+    password: bcrypt.hashSync(password, bcrypt.genSaltSync(
         (saltRounds as number),
     )),
   });
@@ -42,34 +42,28 @@ const createUser = async (req: Request, res: Response) => {
 };
 
 const editUser = async (req: Request, res: Response) => {
-  const {username, password} = req.body;
+  const {username, password, id} = req.body;
 
-  if (!username || !password) {
+  if (!username || !password || ! id) {
     return res.status(400).json({
       error: true,
       message: 'Username and Password are required',
     });
   }
 
-  if (!req.user || !req.user.id) {
-    return res.status(400).json({
-      message: 'No valid User or Id to logout with.',
-      error: true,
-    });
-  }
-
-  const {user} = req.user;
-  const {id} = user;
-
   const saltRounds = process.env.BCRYPT_SALT_ROUNDS ?
     process.env.BCRYPT_SALT_ROUNDS : 10;
 
   try {
-    await User.findByIdAndUpdate(id, {
+    const user = await User.findByIdAndUpdate(id, {
       username: username,
-      password: bcrypt.hash(password, bcrypt.genSaltSync(
+      password: bcrypt.hashSync(password, bcrypt.genSaltSync(
           (saltRounds as number),
       )),
+    });
+    return res.json({
+      error: false,
+      user: user,
     });
   } catch (err) {
     console.log(err);
@@ -79,11 +73,6 @@ const editUser = async (req: Request, res: Response) => {
       message: 'Error saving user. See logs',
     });
   }
-
-  return res.json({
-    error: false,
-    user: user,
-  });
 };
 
 const deleteUser = async (req: Request, res: Response) => {
@@ -96,14 +85,18 @@ const deleteUser = async (req: Request, res: Response) => {
     });
   }
 
-  const result = await User.deleteOne({_id: id}).exec();
+  const result = await User.findByIdAndDelete(id);
 
-  if (result.deletedCount) {
+  if (!result) {
     return res.status(400).json({
       message: `No user found with id ${id}`,
       error: true,
     });
   }
+  return res.json({
+    message: 'User deleted',
+    error: false,
+  });
 };
 
 module.exports = {

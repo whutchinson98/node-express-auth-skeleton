@@ -1,11 +1,10 @@
 import {Response} from 'express';
 import {Request} from '../definitions/request';
 import {generateAuthJWT, refreshTokens} from '../security/generateJWT';
-import {LoginRequest} from '../definitions/loginRequest';
 import {authenticate} from '../security/authenticationManager';
 import {removeUsersTokens} from '../security/jwtManager';
 
-const login = async (req: LoginRequest, res: Response) => {
+const login = async (req: Request, res: Response) => {
   const {user, password} = req.body;
 
   if (!user || !password) {
@@ -48,7 +47,7 @@ const logout = async (req: Request, res: Response) => {
   if (!result) {
     return res.status(400).json(
         {
-          message: 'Error occured removing users tokens. See Logs',
+          message: 'Error occurred removing users tokens. See Logs',
           error: true,
         });
   }
