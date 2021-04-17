@@ -32,14 +32,16 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: false}));
 app.use('/health', require('./routes/healthRouter'));
 
 /* Login, Logout */
-app.use('/', require('./routes/authorizationRouter'));
+app.use('/auth', require('./routes/authorizationRouter'));
 
 // AUTHENTICATED ROUTES
 
 app.use(require('./security/authMiddleware'));
 
 /* RefreshToken */
-app.use('/', require('./routes/refreshRouter'));
-app.use('/', require('./routes/logoutRouter'));
+app.use('/auth', require('./routes/refreshRouter'));
+app.use('/auth', require('./routes/logoutRouter'));
+
+app.use('/admin', require('./routes/adminRouter'));
 
 export = app;

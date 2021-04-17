@@ -4,8 +4,8 @@ const request = supertest(app);
 
 describe('Login Route', () => {
   test('200 OK', async () => {
-    const response = await request.post('/login').send({
-      user: 'Will',
+    const response = await request.post('/auth/login').send({
+      user: 'will',
       password: 'password',
     });
 
@@ -14,7 +14,7 @@ describe('Login Route', () => {
   });
 
   test('400 No User', async () => {
-    const response = await request.post('/login').send({
+    const response = await request.post('/auth/login').send({
       password: 'password',
     });
 
@@ -24,7 +24,7 @@ describe('Login Route', () => {
   });
 
   test('400 No Password', async () => {
-    const response = await request.post('/login').send({
+    const response = await request.post('/auth/login').send({
       user: 'Will',
     });
 

@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/whutchinson98/node-express-auth-skeleton#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "^1.2.3",
+    "@types/bcrypt": "^3.0.1",
     "@types/body-parser": "^1.19.0",
     "@types/cors": "^2.8.10",
     "@types/dotenv": "^8.2.0",

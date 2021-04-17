@@ -4,9 +4,27 @@ dotenv.config();
 import {UserAuthRequest} from '../definitions/userAuthRequest';
 import {Response, NextFunction} from 'express';
 
+const adminAuth = (req: UserAuthRequest):boolean => {
+  // If ADMIN_PRIVATE_KEY is used and matches secret allow call to go forward
+  return !!(process.env.NODE_ENV !== 'PROD' && req.headers['privatekey'] &&
+    process.env.ADMIN_PRIVATE_KEY === req.headers['privatekey']);
+};
+
 const auth = async (req: UserAuthRequest,
     res: Response,
     next: NextFunction) => {
+  // admin middleware
+  if (req.url.split('/')[1] === 'admin') {
+    if (adminAuth(req)) {
+      return next();
+    } else {
+      return res.status(401).json({
+        error: true,
+        message: 'private key required',
+      });
+    }
+  }
+
   // Get refresh token
   const authCookie = req.headers['cookie'];
 
@@ -20,8 +38,8 @@ const auth = async (req: UserAuthRequest,
         authHeader;
 
   // If ADMIN_PRIVATE_KEY is used and matches secret allow call to go forward
-  if (process.env.NODE_ENV !== 'PROD' && req.body.privateKey &&
-        process.env.ADMIN_PRIVATE_KEY === req.body.privateKey) {
+  if (process.env.NODE_ENV !== 'PROD' && req.headers['privatekey'] &&
+        process.env.ADMIN_PRIVATE_KEY === req.headers['privatekey']) {
     return next();
   }
 

@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
-const {addRefreshToken,
+import {addRefreshToken,
   checkForRefreshToken,
-  updateRefreshToken} = require('./jwtManager');
+  updateRefreshToken} from './jwtManager';
 
 /*
  Creates the accessToken and refreshToken
@@ -38,15 +38,16 @@ const generateAuthJWT = (id: string) => {
   Refreshes the token
 */
 const refreshTokens = async (refreshToken: string, id: string) => {
-  if (checkForRefreshToken(id, refreshToken)) {
+  if (await checkForRefreshToken(id, refreshToken)) {
     const tokens = signTokens(id);
 
-    const success = await updateRefreshToken(id,
+    const tokenStatus = await updateRefreshToken(id,
         tokens.refreshToken,
         tokens.token);
 
-    return success ? {error: false, token: tokens.refreshToken}:
-    {error: true, message: 'Issue updating tokens'};
+    return tokenStatus === 'success' ?
+      {error: false, token: tokens.refreshToken}:
+      {error: true, message: tokenStatus};
   } else {
     return {
       error: true,
