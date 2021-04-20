@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
 import bcrypt from 'bcrypt';
+import * as logger from '../utils/logger';
 
 /**
  * @param {string} username
@@ -35,7 +36,7 @@ export const checkUserExists = async (username: string)
     }
     return '';
   } catch (err) {
-    console.log(err);
+    logger.logError(err);
     return 'Error occurred looking for user';
   }
 };

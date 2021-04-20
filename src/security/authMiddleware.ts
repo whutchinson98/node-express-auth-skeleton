@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import {UserAuthRequest} from '../definitions/userAuthRequest';
 import {Response, NextFunction} from 'express';
+import * as logger from '../utils/logger';
 
 const adminAuth = (req: UserAuthRequest):boolean => {
   // If ADMIN_PRIVATE_KEY is used and matches secret allow call to go forward
@@ -54,7 +55,7 @@ const auth = async (req: UserAuthRequest,
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET as string,
       async (err: any, token: any) => {
         if (err) {
-          console.log(err);
+          logger.logError(err);
           return res.status(401).json({
             error: true,
             message: 'invalid refresh token',
@@ -74,7 +75,7 @@ const auth = async (req: UserAuthRequest,
                    process.env.ACCESS_TOKEN_SECRET as string,
                    (err: any, id: any) => {
                      if (err) {
-                       console.log(err);
+                       logger.logError(err);
                        return res.status(401).json({
                          error: true,
                          message: 'invalid auth token',

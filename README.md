@@ -13,6 +13,7 @@ Create a .env file in the root directory with the following variables
 | REFRESH\_TOKEN\_TIME   | The lifetime for the refresh token                |
 | ADMIN\_PRIVATE\_KEY    | Admin private key if sent in body authorizes call |
 | BCRYPT\_SALT\_ROUNDS   | Number of salt rounds used for bcrypt             |
+| LOG\_LEVEL             | Sets the log level for the api                    |
 
 ### Commands
 
