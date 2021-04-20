@@ -14,11 +14,11 @@ const winston = require('winston');
 const logger = winston.createLogger({
   level: 'debug',
   format: winston.format.json(),
-  defaultMeta: { date: new Date(Date.now()).toString() },
+  defaultMeta: {date: new Date(Date.now()).toString()},
   transports: [
     new winston.transports.Console({
       format: winston.format.simple(),
-    })
+    }),
   ],
 });
 
