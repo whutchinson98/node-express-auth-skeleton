@@ -14,7 +14,7 @@ const mongoURL = process.env.NODE_ENV === 'test' ?
   (global as any).__MONGO_URI__ : process.env.DB_URL;
 
 mongoose.connect(mongoURL,
-    {useNewUrlParser: true, useUnifiedTopology: false})
+    {useNewUrlParser: true, useUnifiedTopology: true})
     .catch((err) => {
       logger.logError(err);
     });

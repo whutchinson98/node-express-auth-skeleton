@@ -1,5 +1,6 @@
 import {Response, Request} from 'express';
 import mongoose from 'mongoose';
+import * as logger from '../utils/logger';
 
 const mongooseConnectionStates = ['DISCONNECTED',
   'CONNECTED',
@@ -15,7 +16,7 @@ const connections = async (req: Request, res: Response) => {
       mongoose: state,
     });
   } catch (err) {
-    console.log(err);
+    logger.logError(err);
     return res.status(500).json({
       error: true,
       message: 'Error occured fetching connection state.',

@@ -1,4 +1,5 @@
 const RefreshToken = require('../models/refreshToken.model');
+import * as logger from '../utils/logger';
 
 /*
   Checks if a given refresh token for a user exists and is valid
@@ -8,12 +9,12 @@ export const checkForRefreshToken = async (userId: string,
   const userToken = await RefreshToken.findOne({userId: userId});
 
   if (!userToken) {
-    console.log(`No token for ${userId} found`);
+    logger.logDebug(`No token for ${userId} found`);
     return false;
   }
 
   if (refreshToken.toString() !== userToken.refreshToken.toString()) {
-    console.log('Refresh tokens does not match what is in the database');
+    logger.logDebug('Refresh tokens does not match what is in the database');
     return false;
   }
 
@@ -30,7 +31,7 @@ export const updateRefreshToken = async (userId: string,
     const userTokens = await RefreshToken.findOne({userId: userId});
 
     if (!userTokens) {
-      console.log('No user found with token');
+      logger.logDebug('No user found with token');
       return 'No user found';
     }
 
@@ -39,7 +40,7 @@ export const updateRefreshToken = async (userId: string,
 
     await userTokens.save();
   } catch (err) {
-    console.log(err);
+    logger.logError(err);
     return 'error occurred saving token';
   }
   return 'success';
@@ -61,7 +62,7 @@ export const addRefreshToken = async (refreshToken: string,
   try {
     await userToken.save();
   } catch (err) {
-    console.log(err);
+    logger.logError(err);
     return false;
   }
 
@@ -76,7 +77,7 @@ export const removeUsersTokens = async (id: string) => {
     const result = await RefreshToken.deleteMany({userId: id}).exec();
     return result.deletedCount > 0;
   } catch (err) {
-    console.log(err);
+    logger.logError(err);
     return false;
   }
 };

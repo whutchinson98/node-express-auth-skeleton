@@ -2,6 +2,7 @@ import {Response} from 'express';
 import {Request} from '../definitions/request';
 import bcrypt from 'bcrypt';
 import {checkUserExists} from '../security/authenticationManager';
+import * as logger from '../utils/logger';
 const User = require('../models/user.model');
 require('dotenv').config();
 
@@ -37,8 +38,7 @@ const createUser = async (req: Request, res: Response) => {
   try {
     await user.save();
   } catch (err) {
-    console.log(err);
-
+    logger.logError(err);
     return res.status(500).json({
       error: true,
       message: 'Error saving user. See logs',
@@ -76,7 +76,7 @@ const editUser = async (req: Request, res: Response) => {
       user: user,
     });
   } catch (err) {
-    console.log(err);
+    logger.logError(err);
 
     return res.status(500).json({
       error: true,
