@@ -4,7 +4,10 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import * as logger from './utils/logger';
 require('dotenv').config();
+
+logger.initLogger(process.env.LOG_LEVEL || 'debug');
 
 // DATABASE CONNECTION
 const mongoURL = process.env.NODE_ENV === 'test' ?
@@ -13,11 +16,11 @@ const mongoURL = process.env.NODE_ENV === 'test' ?
 mongoose.connect(mongoURL,
     {useNewUrlParser: true, useUnifiedTopology: false})
     .catch((err) => {
-      console.log(err);
+      logger.logError(err);
     });
 
 const db = mongoose.connection;
-db.once('open', () => console.log('Connected to mongo database'));
+db.once('open', () => logger.logInfo('Database Connected'));
 db.on('error', console.error.bind(console, 'MongoDB connection error: '));
 
 // APP
