@@ -10,7 +10,6 @@ WORKDIR /app
 COPY package*.json ./
 COPY tsconfig.json ./
 COPY .eslintrc.json ./
-COPY .prettierrc.json ./
 
 # Copy Source
 COPY src /app/src
@@ -30,6 +29,8 @@ ENV ADMIN_PRIVATE_KEY=${ADMIN_PRIVATE_KEY}
 ENV DB_URL=${DB_URL}
 
 ENV BCRYPT_SALT_ROUNDS=${BCRYPT_SALT_ROUNDS}
+
+ENV LOG_LEVEL=error
 
 ENV NODE_ENV=PROD
 
