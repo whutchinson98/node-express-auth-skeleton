@@ -1,13 +1,15 @@
 import {Response} from 'express';
-import {Request} from '../definitions/request';
+import {IRequest} from '../definitions/IRequest';
 import {generateAuthJWT, refreshTokens} from '../security/generateJWT';
 import {authenticate} from '../security/authenticationManager';
 import {removeUsersTokens} from '../security/jwtManager';
+import * as logger from '../utils/logger';
 
-const login = async (req: Request, res: Response) => {
+const login = async (req: IRequest, res: Response) => {
   const {user, password} = req.body;
 
   if (!user || !password) {
+    logger.logDebug('No username or password');
     return res.status(400).json(
         {
           error: true,
@@ -18,6 +20,7 @@ const login = async (req: Request, res: Response) => {
   const isAuth = await authenticate(user, password);
 
   if (isAuth === '') {
+    logger.logDebug('User is not authenticated');
     return res.status(401).json({
       error: true,
       message: 'Invalid user or password',
@@ -25,14 +28,15 @@ const login = async (req: Request, res: Response) => {
   }
 
   // Generate and return the tokens
-  const tokens = generateAuthJWT(isAuth);
+  const tokens = await generateAuthJWT(isAuth);
 
   res.cookie('auth', tokens.refreshToken);
 
+  logger.logDebug('User authenticated and cookie set');
   return res.status(200).json({error: false, token: tokens.refreshToken});
 };
 
-const logout = async (req: Request, res: Response) => {
+const logout = async (req: IRequest, res: Response) => {
   if (!req.user || !req.user.id) {
     return res.status(400).json({
       message: 'No valid User or Id to logout with.',
@@ -57,7 +61,7 @@ const logout = async (req: Request, res: Response) => {
   return res.status(200).json({message: 'Logout Successful', error: false});
 };
 
-const refreshToken = async (req: Request, res: Response) => {
+const refreshToken = async (req: IRequest, res: Response) => {
   const {id} = req.user;
   const {refreshToken} = req.refreshToken ? req : req.body;
 

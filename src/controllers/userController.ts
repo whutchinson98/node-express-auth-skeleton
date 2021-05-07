@@ -1,12 +1,12 @@
 import {Response} from 'express';
-import {Request} from '../definitions/request';
+import {IRequest} from '../definitions/IRequest';
 import bcrypt from 'bcrypt';
 import {checkUserExists} from '../security/authenticationManager';
 import * as logger from '../utils/logger';
-const User = require('../models/user.model');
+import {User} from '../models/user.model';
 require('dotenv').config();
 
-const createUser = async (req: Request, res: Response) => {
+const createUser = async (req: IRequest, res: Response) => {
   const {username, password} = req.body;
 
   if (!username || !password) {
@@ -51,7 +51,7 @@ const createUser = async (req: Request, res: Response) => {
   });
 };
 
-const editUser = async (req: Request, res: Response) => {
+const editUser = async (req: IRequest, res: Response) => {
   const {username, password, id} = req.body;
 
   if (!username || !password || ! id) {
@@ -85,7 +85,7 @@ const editUser = async (req: Request, res: Response) => {
   }
 };
 
-const deleteUser = async (req: Request, res: Response) => {
+const deleteUser = async (req: IRequest, res: Response) => {
   const {id} = req.body;
 
   if (!id) {

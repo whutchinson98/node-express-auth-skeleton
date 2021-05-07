@@ -1,11 +1,14 @@
-const RefreshToken = require('../models/refreshToken.model');
+import {RefreshToken} from '../models/refreshToken.model';
 import * as logger from '../utils/logger';
 
-/*
-  Checks if a given refresh token for a user exists and is valid
+/**
+ * Checks if a given refresh token for a user exists and is valid
+ * @param{string} userId
+ * @param{string} refreshToken
+ * @return{Promise<boolean>} whether or not the given refresh token exists
 */
 export const checkForRefreshToken = async (userId: string,
-    refreshToken: string) => {
+    refreshToken: string):Promise<boolean> => {
   const userToken = await RefreshToken.findOne({userId: userId});
 
   if (!userToken) {
@@ -21,8 +24,13 @@ export const checkForRefreshToken = async (userId: string,
   return true;
 };
 
-/*
- Updates the users refresh token and token
+/**
+ * Updates the users refresh token and token
+ * @param{string} userId
+ * @param{string} refreshToken
+ * @param{string} token
+ * @return{Promise<string>} message as to whether or not updating was
+ * successful
 */
 export const updateRefreshToken = async (userId: string,
     refreshToken: string,
@@ -39,6 +47,7 @@ export const updateRefreshToken = async (userId: string,
     userTokens.refreshToken = refreshToken;
 
     await userTokens.save();
+    logger.logDebug('User token saved');
   } catch (err) {
     logger.logError(err);
     return 'error occurred saving token';
@@ -47,12 +56,16 @@ export const updateRefreshToken = async (userId: string,
 };
 
 
-/*
- Adds a new refresh token object to the database for the user
+/**
+ * Adds a new refresh token object to the database for the user
+ * @param{string} refreshToken
+ * @param{string} token
+ * @param{string} userId
+ * @return{Promise<boolean>} whether or not adding refresh token was successful
 */
 export const addRefreshToken = async (refreshToken: string,
     token: string,
-    userId: string) => {
+    userId: string):Promise<boolean> => {
   const userToken = new RefreshToken({
     userId: userId,
     accessToken: token,
@@ -61,6 +74,7 @@ export const addRefreshToken = async (refreshToken: string,
 
   try {
     await userToken.save();
+    logger.logDebug('User token saved');
   } catch (err) {
     logger.logError(err);
     return false;
@@ -69,13 +83,22 @@ export const addRefreshToken = async (refreshToken: string,
   return true;
 };
 
-/*
-  Removes the tokens for a given user to log them out
+/**
+ * Removes the tokens for a given user to log them out
+ * @param{string} id
+ * @return{Promise<boolean>} whether deleting user token was successful
 */
-export const removeUsersTokens = async (id: string) => {
+export const removeUsersTokens = async (id: string):Promise<boolean> => {
   try {
     const result = await RefreshToken.deleteMany({userId: id}).exec();
-    return result.deletedCount > 0;
+
+    if (!result) {
+      logger.logError(`Error deleting refresh token ${id}`);
+      return false;
+    }
+
+    logger.logDebug('RefreshToken deleted');
+    return (result?.deletedCount || 0) > 0;
   } catch (err) {
     logger.logError(err);
     return false;
