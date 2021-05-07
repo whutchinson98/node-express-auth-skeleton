@@ -1,4 +1,4 @@
-export interface TokenListEntry {
+export interface ITokenListEntry {
   token: string,
   refreshToken: string
 };

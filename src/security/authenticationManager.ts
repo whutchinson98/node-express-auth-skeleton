@@ -1,11 +1,11 @@
-const User = require('../models/user.model');
+import {User} from '../models/user.model';
 import bcrypt from 'bcrypt';
 import * as logger from '../utils/logger';
 
 /**
  * @param {string} username
  * @param {string} password
- * @return {boolean} whether the password is valid for the user
+ * @return {Promise<boolean>} whether the password is valid for the user
  */
 export const authenticate = async (username: string, password: string)
 :Promise<string> => {
@@ -24,7 +24,7 @@ export const authenticate = async (username: string, password: string)
 
 /**
  * @param {string} username
- * @return {boolean} whether the user exists or not
+ * @return {Promise<boolean>} whether the user exists or not
 */
 export const checkUserExists = async (username: string)
 :Promise<string> => {

@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
-const User = require('../src/models/user.model');
-const bcrypt = require('bcrypt');
-const {generateAuthJWT} = require('../src/security/generateJWT');
+const {createUser} = require('./helper.tests');
 
 const initializeDatabase = async () => {
   process.env = {
@@ -13,15 +11,7 @@ const initializeDatabase = async () => {
     BCRYPT_SALT_ROUNDS: 10,
   };
 
-  const user = new User({
-    username: 'will',
-    password: bcrypt.hashSync('password',
-        bcrypt.genSaltSync(10)),
-  });
-
-  await user.save();
-
-  const tokens = generateAuthJWT(user.id);
+  const {user, tokens} = await createUser();
 
   global.authCookie = tokens.refreshToken;
   global.user = user;

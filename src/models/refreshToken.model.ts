@@ -1,11 +1,19 @@
-import mongoose from 'mongoose';
-const Schema = mongoose.Schema;
+import {model, Schema, Model, Document} from 'mongoose';
 
-const RefreshTokenSchema = new Schema({
-  userId: String,
-  accessToken: String,
-  refreshToken: String,
+interface IRefreshToken extends Document {
+  userId:string;
+  accessToken:string;
+  refreshToken:string;
+  createdAt:Date;
+};
+
+const RefreshTokenSchema:Schema = new Schema({
+  userId: {type: String, required: true},
+  accessToken: {type: String, required: true},
+  refreshToken: {type: String, required: true},
   createdAt: {type: Date, default: Date.now},
 }, {collection: 'refreshtoken'});
 
-module.exports = mongoose.model('RefreshToken', RefreshTokenSchema);
+const RefreshToken:Model<IRefreshToken> = model('RefreshToken',
+    RefreshTokenSchema);
+export {RefreshToken};
